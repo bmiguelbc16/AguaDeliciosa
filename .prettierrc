@@ -1,0 +1,27 @@
+{
+  "semi": false,
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "trailingComma": "none",
+  "printWidth": 120,
+  "singleQuote": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "braceStyle": "1tbs",
+  "plugins": ["@prettier/plugin-php", "@shufo/prettier-plugin-blade"],
+  "overrides": [
+    {
+      "files": ["**/*.php"],
+      "options": {
+        "parser": "php"
+      }
+    },
+    {
+      "files": ["*.blade.php"],
+      "options": {
+        "parser": "blade",
+        "tabWidth": 2
+      }
+    }
+  ]
+}
