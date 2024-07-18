@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Doctor;
-use App\Models\Patient;
+use App\Models\Client;
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -28,50 +27,33 @@ class UserSeeder extends Seeder {
       'name' => 'Admin',
       'last_name' => 'User',
       'birth_date' => '1990-01-01',
-      'gender' => 'F',
+      'gender' => 'M',
       'phone_number' => '1234567890',
       'userable_type' => Employee::class,
       'userable_id' => $employee->id,
       'active' => true,
-      'email' => 'admin@orozcodent.com',
+      'email' => 'admin@aguadeliciosa.com',
       'password' => Hash::make('admin123456'),
     ]);
-    $userEmployee->assignRole('admin');
+    $userEmployee->assignRole('Admin');
 
-    // Crear doctor
-    $doctor = Doctor::create([
-      'facebook' => '',
-      'instagram' => '',
-      'whatsapp' => '',
-      'university' => '',
-      'university_studies' => '',
-    ]);
+    // Crear client
+    $client = Client::create();
 
-    $userDoctor = User::create([
-      'document_number' => '23456789',
-      'name' => 'Doctor',
-      'last_name' => 'Usuario',
-      'birth_date' => '1985-01-01',
-      'gender' => 'F',
-      'phone_number' => '1234567891',
-      'userable_type' => Doctor::class,
-      'userable_id' => $doctor->id,
-      'active' => true,
-      'email' => 'doctor@orozcodent.com',
-      'password' => Hash::make('doctor123456'),
-    ]);
-    $userDoctor->assignRole('doctor');
-
-    // Crear patient
-    $patient = Patient::create([
+    $userClient = User::create([
       'document_number' => '45678901',
-      'name' => 'Paciente',
+      'name' => 'Cliente',
       'last_name' => 'Usuario',
       'birth_date' => '2000-01-01',
       'gender' => 'M',
+      'phone_number' => '1234567890',
+      'userable_type' => Client::class,
+      'userable_id' => $client->id,
       'phone_number' => '1234567893',
-      'email' => 'paciente@orozcodent.com',
-      'password' => Hash::make('paciente123456'),
+      'email' => 'cliente@aguadeliciosa.com',
+      'password' => Hash::make('cliene123456'),
     ]);
+
+    $userClient->assignRole('Cliente');
   }
 }
