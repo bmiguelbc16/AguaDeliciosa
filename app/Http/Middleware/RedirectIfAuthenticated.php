@@ -19,11 +19,18 @@ class RedirectIfAuthenticated {
     if (Auth::guard($guard)->check()) {
       \Log::info('guard: ' . $guard);
 
-      if ($guard === 'admin') {
+      $user = Auth::guard($guard)->user();
+
+      if ($user->hasRole('Admin')) {
         return redirect()->route('admin.dashboard.index');
-      } elseif ($guard === 'patient') {
-        return redirect()->route('patient.dashboard.index');
       }
+
+      if ($user->hasRole('Cliente')) {
+        return redirect()->route('client.dashboard.index');
+      }
+
+      // Redirige a una página por defecto si el rol no coincide
+      return redirect('/');
     }
 
     return $next($request);

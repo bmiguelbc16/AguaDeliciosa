@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Patient;
+use App\Models\Client;
 use Illuminate\Http\Request;
-use App\Http\Requests\PatientRequest;
+use App\Http\Requests\ClientRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-class PatientController extends AdminController {
+class ClientController extends AdminController {
   /**
    * Display a listing of the resource.
    *
@@ -18,11 +18,11 @@ class PatientController extends AdminController {
     //
     $name = $request->name;
 
-    $items = Patient::when($name, function ($query) use ($name) {
+    $items = Client::when($name, function ($query) use ($name) {
       $query->whereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%{$name}%"]);
     })->paginate(20);
 
-    return response()->view('admin.patients.index', compact('items', 'request'));
+    return response()->view('admin.clients.index', compact('items', 'request'));
   }
 
   /**
@@ -32,9 +32,9 @@ class PatientController extends AdminController {
    */
   public function create() {
     //
-    $genders = Patient::OPTIONS_GENDER;
+    $genders = Client::OPTIONS_GENDER;
 
-    return view('admin.patients.create', compact('genders'));
+    return view('admin.clients.create', compact('genders'));
   }
 
   /**
@@ -43,7 +43,7 @@ class PatientController extends AdminController {
    * @param  \Illuminate\Http\DoctorRequest  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(PatientRequest $request) {
+  public function store(ClientRequest $request) {
     //
     DB::beginTransaction();
 
@@ -53,12 +53,12 @@ class PatientController extends AdminController {
       $data['active'] = isset($data['active']);
       $data['password'] = Hash::make($request->input('password'));
 
-      Patient::create($data);
+      Client::create($data);
 
       DB::commit();
 
       return redirect()
-        ->route('admin.patients.index')
+        ->route('admin.clients.index')
         ->with('success', 'Paciente creado satisfactoriamente');
     } catch (\Exception $e) {
       DB::rollBack();
@@ -72,56 +72,56 @@ class PatientController extends AdminController {
   /**
    * Display the specified resource.
    *
-   * @param  \App\Models\Patient  $patient
+   * @param  \App\Models\Client  $client
    * @return \Illuminate\Http\Response
    */
-  public function show(Patient $patient) {
+  public function show(Client $client) {
     //
   }
 
   /**
    * Show the form for editing the specified resource.
    *
-   * @param  \App\Models\Patient  $patient
+   * @param  \App\Models\Client  $client
    * @return \Illuminate\Http\Response
    */
-  public function edit(Patient $patient) {
+  public function edit(Client $client) {
     //
-    $genders = Patient::OPTIONS_GENDER;
+    $genders = Client::OPTIONS_GENDER;
 
-    return view('admin.patients.edit', compact('patient', 'genders'));
+    return view('admin.clients.edit', compact('client', 'genders'));
   }
 
   /**
    * Update the specified resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Models\Patient  $patient
+   * @param  \App\Models\Client  $client
    * @return \Illuminate\Http\Response
    */
-  public function update(PatientRequest $request, Patient $patient) {
+  public function update(ClientRequest $request, Client $client) {
     //
     $data = $request->validated();
     $data['active'] = isset($data['active']);
 
-    $patient->update($data);
-    $patient->update($data);
+    $client->update($data);
+    $client->update($data);
 
     return redirect()
-      ->route('admin.patients.index')
+      ->route('admin.clients.index')
       ->with('success', 'Paciente actualizado satisfactoriamente');
   }
 
   /**
    * Remove the specified resource from storage.
    *
-   * @param  \App\Models\Patient  $patient
+   * @param  \App\Models\Client  $client
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Patient $patient) {
+  public function destroy(Client $client) {
     //
     try {
-      $patient->delete();
+      $client->delete();
 
       return response()->json(['success' => true, 'message' => 'Paciente eliminado satisfactoriamente']);
     } catch (\Exception $e) {

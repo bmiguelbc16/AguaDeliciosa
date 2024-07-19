@@ -1,7 +1,8 @@
 <nav class="sidebar">
   <div class="sidebar-header">
     <a href="#" class="sidebar-brand">
-      OROZCO<span>DENT</span>
+      AGUA
+      <span>DELICIOSA</span>
     </a>
     <div class="sidebar-toggler not-active">
       <span></span>
@@ -28,21 +29,14 @@
         </a>
       </li>
 
-      <li class="nav-item {{ active_class(['admin/seguridad/doctores', 'admin/seguridad/doctores/*']) }}">
-        <a href="{{ route('admin.doctors.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="users"></i>
-          <span class="link-title">Doctores</span>
-        </a>
-      </li>
-
       <li class="nav-item nav-category">configuración</li>
 
       <li class="nav-item nav-category">Registros</li>
 
-      <li class="nav-item {{ active_class(['admin/registros/pacientes', 'admin/registros/pacientes/*']) }}">
-        <a href="{{ route('admin.patients.index') }}" class="nav-link">
+      <li class="nav-item {{ active_class(['admin/registros/clientes', 'admin/registros/clientes/*']) }}">
+        <a href="{{ route('admin.clients.index') }}" class="nav-link">
           <i class="link-icon" data-feather="users"></i>
-          <span class="link-title">Pacientes</span>
+          <span class="link-title">Clientes</span>
         </a>
       </li>
 

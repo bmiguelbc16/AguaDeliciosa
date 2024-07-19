@@ -13,7 +13,7 @@ return [
     */
 
   'defaults' => [
-    'guard' => 'patient',
+    'guard' => 'web',
     'passwords' => 'users',
   ],
 
@@ -35,14 +35,9 @@ return [
     */
 
   'guards' => [
-    'admin' => [
+    'web' => [
       'driver' => 'session',
       'provider' => 'users',
-    ],
-
-    'patient' => [
-      'driver' => 'session',
-      'provider' => 'patients',
     ],
 
     'api' => [
@@ -74,11 +69,6 @@ return [
       'driver' => 'eloquent',
       'model' => App\Models\User::class,
     ],
-
-    'patients' => [
-      'driver' => 'eloquent',
-      'model' => App\Models\Patient::class,
-    ],
   ],
 
   /*
@@ -99,13 +89,6 @@ return [
   'passwords' => [
     'users' => [
       'provider' => 'users',
-      'table' => 'password_resets',
-      'expire' => 60,
-      'throttle' => 60,
-    ],
-
-    'patients' => [
-      'provider' => 'patients',
       'table' => 'password_resets',
       'expire' => 60,
       'throttle' => 60,

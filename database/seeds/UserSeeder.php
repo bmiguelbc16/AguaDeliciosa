@@ -51,7 +51,7 @@ class UserSeeder extends Seeder {
       'userable_id' => $client->id,
       'phone_number' => '1234567893',
       'email' => 'cliente@aguadeliciosa.com',
-      'password' => Hash::make('cliene123456'),
+      'password' => Hash::make('cliente123456'),
     ]);
 
     $userClient->assignRole('Cliente');

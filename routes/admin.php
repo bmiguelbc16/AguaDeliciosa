@@ -14,8 +14,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmployeeController;
-use App\Http\Controllers\Admin\DoctorController;
-use App\Http\Controllers\Admin\PatientController;
+use App\Http\Controllers\Admin\ClientController;
 
 Route::get('/', function () {
   return redirect()->secure(route('admin.dashboard.index'));
@@ -28,18 +27,13 @@ Route::prefix('seguridad')->group(function () {
     ->except(['show'])
     ->parameters(['trabajadores' => 'employee'])
     ->names('employees');
-
-  Route::resource('doctores', DoctorController::class)
-    ->except(['show'])
-    ->parameters(['doctores' => 'doctor'])
-    ->names('doctors');
 });
 
 Route::prefix('registros')->group(function () {
-  Route::resource('pacientes', PatientController::class)
+  Route::resource('clientes', ClientController::class)
     ->except(['show'])
-    ->parameters(['pacientes' => 'patient'])
-    ->names('patients');
+    ->parameters(['clientes' => 'client'])
+    ->names('clients');
 });
 
 // 404 for undefined routes

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
-class DoctorRequest extends BaseFormRequest {
+use Illuminate\Foundation\Http\FormRequest;
+
+class ClientRequest extends BaseFormRequest {
   /**
    * Determine if the user is authorized to make this request.
    *
@@ -18,7 +20,7 @@ class DoctorRequest extends BaseFormRequest {
    * @return array<string, mixed>
    */
   public function rules() {
-    $doctor = $this->route('admin.doctor');
+    $client = $this->route('admin.client');
 
     $rules = [
       'name' => 'required|string',
@@ -28,18 +30,9 @@ class DoctorRequest extends BaseFormRequest {
       'birth_date' => 'required|date',
       'phone' => 'nullable|string',
       'active' => 'nullable|in:on',
-      'facebook' => 'nullable|string',
-      'instagram' => 'nullable|string',
-      'whatsapp' => 'required|string',
-      'university' => 'required|string',
-      'university_studies' => 'required|string|max:200',
-      // 'foto' => 'required|file|image|mimes:jpeg,png,jpg,gif|max:2048',
     ];
 
-    if (
-      ($this->isMethod('patch') && $doctor && $doctor->user->email !== $this->input('email')) ||
-      $this->isMethod('post')
-    ) {
+    if (($this->isMethod('patch') && $client && $client->email !== $this->input('email')) || $this->isMethod('post')) {
       $rules['email'] = 'required|email|unique:users,email';
     }
 

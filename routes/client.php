@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\DashboardController;
 
 Route::get('/', function () {
-  return redirect()->secure(route('patient.dashboard.index'));
+  return redirect()->secure(route('client.dashboard.index'));
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');

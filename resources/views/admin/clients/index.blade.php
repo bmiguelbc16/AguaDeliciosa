@@ -32,7 +32,7 @@
                 <th class="text-center align-middle">ID</th>
                 <th class="text-center align-middle">Nombre</th>
                 <th class="text-center align-middle">Email</th>
-                <th class="text-center align-middle">Tipo</th>
+                <th class="text-center align-middle">Rol</th>
                 <th class="text-center align-middle">Estado</th>
                 <th class="text-center align-middle">Acción</th>
               </tr>
@@ -42,17 +42,18 @@
                 <tr>
                   <td class="text-center align-middle">{{ $item->id }}</td>
                   <td class="text-center align-middle">
-                    {{ $item->clientable->first_name ?? $item->clientable->company_name }}</td>
-                  <td class="text-center align-middle">{{ $item->email }}</td>
-                  <td class="text-center align-middle">{{ __('messages.' . $item->clientable_type_name) }}</td>
-                  <td class="text-center align-middle">{{ $item->active ? 'Activo' : 'Inactivo' }}</td>
+                    {{ $item->userable?->person?->fullName() ?? ($item->user?->fullName() ?? '') }}
+                  </td>
+                  <td class="text-center align-middle">{{ $item->user?->email }}</td>
+                  <td class="text-center align-middle">{{ $item->user?->roles->pluck('name')->implode(', ') }}</td>
+                  <td class="text-center align-middle">{{ $item->user?->active ? 'Activo' : 'Inactivo' }}</td>
                   <td class="text-center">
-                    <div class="btn-group" client="group" aria-label="Acciones">
+                    <div class="btn-group" user="group" aria-label="Acciones">
                       <a href="{{ route('admin.clients.edit', $item->id) }}" class="btn btn-success">
                         <i data-feather="edit"></i>
                       </a>
                       <button class="btn btn-danger btn-delete"
-                        onclick="deleteItem('{{ route('admin.clients.destroy', $item->id) }}', '{{ route('admin.clients.index') }}')">
+                        onclick="deleteItem('{{ route('admin.clients.destroy', $item->id) }}', '{{ route('admin.employees.index') }}')">
                         <i data-feather="trash-2"></i>
                       </button>
                     </div>
