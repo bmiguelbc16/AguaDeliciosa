@@ -13,12 +13,22 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\DashboardController;
-
+use App\Http\Controllers\Client\ProfileController;
+use App\Http\Controllers\Client\OrderController;
 Route::get('/', function () {
   return redirect()->secure(route('client.dashboard.index'));
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+Route::prefix('registros')->group(function () {
+  Route::resource('pedidos', OrderController::class)
+    ->except(['show'])
+    ->parameters(['pedidos' => 'order'])
+    ->names('orders');
+});
 
 // 404 for undefined routes
 Route::any('/{page?}', function () {

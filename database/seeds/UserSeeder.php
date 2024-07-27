@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Employee;
+use App\Models\Digitizer;
+use App\Models\Seller;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
@@ -20,9 +22,9 @@ class UserSeeder extends Seeder {
     //
 
     // Crear admin
-    $employee = Employee::create();
+    $admin = Employee::create();
 
-    $userEmployee = User::create([
+    $userAdmin = User::create([
       'document_number' => '12345678',
       'name' => 'Admin',
       'last_name' => 'User',
@@ -30,13 +32,48 @@ class UserSeeder extends Seeder {
       'gender' => 'M',
       'phone_number' => '1234567890',
       'userable_type' => Employee::class,
-      'userable_id' => $employee->id,
+      'userable_id' => $admin->id,
       'active' => true,
       'email' => 'admin@aguadeliciosa.com',
       'password' => Hash::make('admin123456'),
     ]);
-    $userEmployee->assignRole('Admin');
+    $userAdmin->assignRole('Admin');
 
+    // Crear digitizer
+    $digitizer = Employee::create();
+
+    $userDigitizer = User::create([
+      'document_number' => '45678902',
+      'name' => 'Digitador',
+      'last_name' => 'User',
+      'birth_date' => '2001-02-03',
+      'gender' => 'M',
+      'phone_number' => '123456789',
+      'userable_type' => Employee::class,
+      'userable_id' => $digitizer->id,
+      'email' => 'digitador@aguadeliciosa.com',
+      'password' => Hash::make('digitador123456'),
+    ]);
+
+    $userDigitizer->assignRole('Digitador');
+
+    // Crear sellers (vendedor)
+    $seller = Employee::create();
+
+    $userSeller = User::create([
+      'document_number' => '45678903',
+      'name' => 'Vendedor',
+      'last_name' => 'User',
+      'birth_date' => '2001-02-03',
+      'gender' => 'F',
+      'phone_number' => '123456789',
+      'userable_type' => Employee::class,
+      'userable_id' => $seller->id,
+      'email' => 'vendedor@aguadeliciosa.com',
+      'password' => Hash::make('vendedor123456'),
+    ]);
+
+    $userSeller->assignRole('Vendedor');
     // Crear client
     $client = Client::create();
 

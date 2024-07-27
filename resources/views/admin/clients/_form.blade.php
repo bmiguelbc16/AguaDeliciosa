@@ -20,13 +20,6 @@
   <div class="card mb-4">
     <div class="card-body">
       <h6 class="card-title">Datos generales</h6>
-      <div class="row">
-        <div class="col-sm-12">
-          <x-form.select2 name="type" label="Tipo de cliente" data-placeholder="Seleccione opción" enable-old-support>
-            <x-form.options :options="$options_type_client" :selected="isset($client) ? strtolower($client?->clientable_type_name) : 'person'" empty-option />
-          </x-form.select2>
-        </div>
-      </div>
 
       <div id="personFields">
         <div class="row">
@@ -63,7 +56,7 @@
           </div>
 
           <div class="col-sm-4">
-            <x-form.radio-group name="gender" label="Genero" :options="['M' => 'Masculino', 'F' => 'Femenino']" :selected="isset($client) ? $client->clientable->gender : null" />
+            <x-form.radio-group name="gender" label="Genero" :options="['M' => 'Masculino', 'F' => 'Femenino']" :selected="isset($client) ? $client->user?->gender : 'M'" />
           </div>
 
           <div class="col-sm-4">
@@ -128,101 +121,7 @@
       <div class="row">
         <div class="col-sm-4">
           <x-form.input type="number" name="phone" label="Teléfono" placeholder="Teléfono"
-            value="{{ $client->clientable->phone ?? '' }}" enable-old-support />
-        </div>
-        <div class="col-sm-4">
-          <x-form.select2 name="street_id" label="Calle" data-placeholder="Seleccione opción" enable-old-support>
-            <x-form.options :options="$streets" :selected="isset($client) ? $client?->street?->id : null" empty-option />
-          </x-form.select2>
-        </div>
-        <div class="col-sm-4">
-          <x-form.input type="number" name="number_block" label="Número de Cuadra" placeholder="Número de Cuadra"
-            value="{{ $client->number_block ?? '' }}" enable-old-support />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-4">
-          <x-form.input type="number" name="number_house" label="Número de casa" placeholder="Número de casa"
-            value="{{ $client->number_house ?? '' }}" enable-old-support />
-        </div>
-
-        <div class="col-sm-4">
-          <x-form.input name="latitude" label="Latitud" placeholder="Latitud" value="{{ $client->latitude ?? '' }}"
-            enable-old-support />
-        </div>
-
-        <div class="col-sm-4">
-          <x-form.input name="longitude" label="Longitud" placeholder="Longitud"
-            value="{{ $client->longitude ?? '' }}" enable-old-support />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12">
-          <x-form.input name="reference" label="Referencia" placeholder="Referencia"
-            value="{{ $client->reference ?? '' }}" enable-old-support />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mb-4">
-    <div class="card-body">
-      <h6 class="card-title">Recibo digital</h6>
-      <div class="row">
-        <div class="col-sm-12">
-          <x-form.input-switch name="digital_invoice" :checked="isset($client) && $client->digital_invoice ? true : (!isset($client) ? false : false)" enable-old-support>
-            <x-slot name="appendSlot">
-              <label class="form-check-label" for="digital_invoice">Desea que se le remita recibo digital?</label>
-            </x-slot>
-          </x-form.input-switch>
-        </div>
-      </div>
-
-      <div id="digitalInvoiceFields"
-        style="{{ isset($client) && $client->digital_invoice ? 'display: block;' : 'display: none;' }}">
-        <div class="row">
-          <div class="col-sm-6">
-            <x-form.input name="email" label="Correo" placeholder="Correo" value="{{ $client->email ?? '' }}"
-              enable-old-support />
-          </div>
-
-          <div class="col-sm-6">
-            <x-form.input name="whatsapp" label="Whatsapp" placeholder="Whatsapp"
-              value="{{ $client->whatsapp ?? '' }}" enable-old-support />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mb-4">
-    <div class="card-body">
-      <h6 class="card-title">Casilla electrónica</h6>
-      <div class="row">
-        <div class="col-sm-4">
-          <x-form.input-switch name="mail_box" :checked="isset($client) && $client->mail_box ? true : (!isset($client) ? false : false)" enable-old-support>
-            <x-slot name="appendSlot">
-              <label class="form-check-label" for="mail_box">Casilla Electronica?</label>
-            </x-slot>
-          </x-form.input-switch>
-        </div>
-        <div class="col-sm-4">
-          <x-form.input type="file" name="affidavit_file" label="Declaración Jurada"
-            placeholder="Declaración Jurada" value="{{ $client->file->original_name ?? '' }}" enable-old-support />
-
-          @if (isset($client) && $client->file)
-            <p>Archivo PDF Actual: {{ $client->file->original_name }}</p>
-            <a href="{{ asset('storage/' . $client->file->path) }}" target="_blank">Ver PDF</a>
-          @endif
-        </div>
-        <div class="col-sm-4">
-          <x-form.input-switch name="active" :checked="isset($client) && $client->active ? true : (!isset($client) ? 'true' : false)" enable-old-support>
-            <x-slot name="appendSlot">
-              <label class="form-check-label" for="active">Activo</label>
-            </x-slot>
-          </x-form.input-switch>
+            value="{{ $client->user->phone_number ?? '' }}" enable-old-support />
         </div>
       </div>
     </div>
@@ -233,40 +132,6 @@
     onclick="window.location = '{{ route('admin.clients.index') }}'" />
 
 </form>
-
-@push('custom-scripts')
-  <script>
-    $(document).ready(function() {
-      $('#type').change(function() {
-        if ($(this).val() == 'person') {
-          $('#personFields').show();
-          $('#companyFields').hide();
-        } else {
-          $('#personFields').hide();
-          $('#companyFields').show();
-        }
-      });
-
-      $('#type').trigger('change');
-
-
-      $('#digital_invoice').change(function() {
-
-        if ($(this).is(":checked")) {
-          $('#digitalInvoiceFields').show();
-          $('#digitalInvoiceFields input').prop('disabled', false);
-        } else {
-          $('#digitalInvoiceFields').hide();
-          $('#digitalInvoiceFields input').prop('disabled', true);
-        }
-
-      });
-
-      $('#type').trigger('change');
-
-    });
-  </script>
-@endpush
 
 @push('plugin-scripts')
   <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>

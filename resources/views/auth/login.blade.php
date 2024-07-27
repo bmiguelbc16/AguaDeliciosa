@@ -14,7 +14,7 @@
             </div>
             <div class="col-md-7 ps-md-0">
               <div class="auth-form-wrapper px-4 py-5">
-                <a href="#" class="noble-ui-logo d-block mb-2">OROZCODENT</a>
+                <a href="#" class="noble-ui-logo d-block mb-2">AGUA DELICIOSA</a>
                 <h5 class="text-muted fw-normal mb-4">¡Bienvenido de nuevo al sistema! Ingrese a su cuenta.</h5>
                 <form method="POST" action="{{ route('login') }}" class="forms-sample">
                   @csrf

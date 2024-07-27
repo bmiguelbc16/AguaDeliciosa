@@ -14,13 +14,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\OrderController;
 
 Route::get('/', function () {
   return redirect()->secure(route('admin.dashboard.index'));
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 
 Route::prefix('seguridad')->group(function () {
   Route::resource('trabajadores', EmployeeController::class)
@@ -34,6 +38,11 @@ Route::prefix('registros')->group(function () {
     ->except(['show'])
     ->parameters(['clientes' => 'client'])
     ->names('clients');
+
+  Route::resource('pedidos', OrderController::class)
+    ->except(['show'])
+    ->parameters(['pedidos' => 'order'])
+    ->names('orders');
 });
 
 // 404 for undefined routes

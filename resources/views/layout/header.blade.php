@@ -29,10 +29,18 @@
             </div>
           </div>
           <ul class="list-unstyled p-1">
+
+            <li class="dropdown-item py-2">
+              <a href="#" class="text-body ms-0">
+                <i class="me-2 icon-md" data-feather="user"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+
             <li class="dropdown-item py-2" onclick="document.getElementById('logout-form').submit();">
               <a href="javascript:;" class="text-body ms-0">
                 <i class="me-2 icon-md" data-feather="log-out"></i>
-                <span>Log Out</span>
+                <span>Cerrar Sesion</span>
               </a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
