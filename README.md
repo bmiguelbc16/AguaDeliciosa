@@ -9,11 +9,11 @@
 
 Clone el proyecto y luego vaya a la carpeta del proyecto.
 ``` 
-git clone https://github.com/jcbances6/orozcodent_app.git
+git clone https://github.com/bmiguelbc16/AguaDeliciosa.git
 ``` 
 Ejemplo:
 ``` 
-cd orozcodent_app
+cd aguadeliciosa_app
 ``` 
 Instale las dependencias de Composer:
 ``` 
