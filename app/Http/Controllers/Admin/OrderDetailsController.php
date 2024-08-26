@@ -1,31 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\Client;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
-use App\Http\Requests\OrderRequest;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\OrderDetailRequest;
 use Illuminate\Support\Facades\DB;
 
-class OrderController extends AdminController {
+class OrderDetailsController extends AdminController {
   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
   public function index(Request $request) {
-    $name = $request->input('name'); // Nombre del cliente para buscar
+    //
+    $name = $request->input('name'); // Nombre del pruducto para buscar en el pedido
 
-    // Asegúrate de tener la relación definida en tu modelo Order
-    $items = Order::whereHas('client.user', function ($query) use ($name) {
-      $query->where(function ($query) use ($name) {
-        $query->where('name', 'LIKE', "%{$name}%")->orWhere('last_name', 'LIKE', "%{$name}%");
-      });
+    $items = OrderDetail::whereHas('product', function ($query) use ($name) {
+      $query->where('name', 'LIKE', "%{$name}%");
     })->paginate(20);
 
-    return response()->view('admin.orders.index', compact('items', 'request'));
+    return response()->view('admin.orderdetails.index', compact('items', 'request'));
   }
 
   /**
@@ -34,31 +30,30 @@ class OrderController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function create() {
-    // Cargar datos necesarios para la creación, si es necesario
-    // Ejemplo: $clients = Client::all();
-    return view('admin.orders.create');
+    return view('admin.orderdetails.create');
   }
 
   /**
    * Store a newly created resource in storage.
    *
-   * @param  \Illuminate\Http\OrderRequest  $request
+   * @param  \Illuminate\Http\OrderDetailRequest  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(OrderRequest $request) {
+  public function store(OrderDetailRequest $request) {
+    //
     DB::beginTransaction();
 
     try {
       $data = $request->validated();
 
       // Aquí debes asegurarte de que los datos estén correctamente formateados
-      // Por ejemplo, puede ser necesario asociar un cliente u otros datos
-      Order::create($data);
+      // Por ejemplo, puede ser necesario asociados
+      OrderDetail::create($data);
 
       DB::commit();
 
       return redirect()
-        ->route('admin.orders.index')
+        ->route('admin.orderdetails.index')
         ->with('success', 'Orden creada satisfactoriamente');
     } catch (\Exception $e) {
       DB::rollBack();
@@ -72,52 +67,49 @@ class OrderController extends AdminController {
   /**
    * Display the specified resource.
    *
-   * @param  \App\Models\Order  $order
+   * @param  \App\Models\OrderDetail $OrderDetail
    * @return \Illuminate\Http\Response
    */
-  public function show(Order $order) {
-    // Implementar si es necesario
-    return view('admin.orders.show', compact('order'));
+  public function show(OrderDetail $orderdetail) {
+    //
   }
 
   /**
    * Show the form for editing the specified resource.
    *
-   * @param  \App\Models\Order  $order
+   * @param  \App\Models\OrderDetail  $OrderDetail
    * @return \Illuminate\Http\Response
    */
-  public function edit(Order $order) {
-    // Implementar si es necesario
-    return view('admin.orders.edit', compact('order'));
+  public function edit(OrderDetail $orderdetail) {
+    return view('admin.orderdetails.edit', compact('orderdetail'));
   }
 
   /**
    * Update the specified resource in storage.
    *
-   * @param  \Illuminate\Http\OrderRequest  $request
-   * @param  \App\Models\Order  $order
+   * @param  \Illuminate\Http\OrderDetailRequest  $request
+   * @param  \App\Models\OrderDetail  $OrderDetail
    * @return \Illuminate\Http\Response
    */
-  public function update(OrderRequest $request, Order $order) {
+  public function update(OrderDetailRequest $request, OrderDetail $orderdetail) {
     $data = $request->validated();
 
-    $order->update($data);
+    $orderdetail->update($data);
 
     return redirect()
-      ->route('admin.orders.index')
+      ->route('admin.orderdetails.index')
       ->with('success', 'Orden actualizada satisfactoriamente');
   }
 
   /**
    * Remove the specified resource from storage.
    *
-   * @param  \App\Models\Order  $order
+   * @param  \App\Models\OrderDetail $orderdetail
    * @return \Illuminate\Http\Response
    */
-
-  public function destroy(Order $order) {
+  public function destroy(OrderDetail $orderdetail) {
     try {
-      $order->delete();
+      $orderdetail->delete();
 
       return response()->json(['success' => true, 'message' => 'Orden eliminada satisfactoriamente']);
     } catch (\Exception $e) {

@@ -39,23 +39,41 @@ class UserSeeder extends Seeder {
     ]);
     $userAdmin->assignRole('Admin');
 
-    // Crear digitizer
-    $digitizer = Employee::create();
+    // Crear gestor de pedidos
+    $order_manager = Employee::create();
 
-    $userDigitizer = User::create([
+    $userWarehouseman = User::create([
       'document_number' => '45678902',
-      'name' => 'Digitador',
+      'name' => 'Gestor de pedidos',
       'last_name' => 'User',
       'birth_date' => '2001-02-03',
       'gender' => 'M',
       'phone_number' => '123456789',
       'userable_type' => Employee::class,
-      'userable_id' => $digitizer->id,
-      'email' => 'digitador@aguadeliciosa.com',
-      'password' => Hash::make('digitador123456'),
+      'userable_id' => $order_manager->id,
+      'email' => 'gestorp@aguadeliciosa.com',
+      'password' => Hash::make('gestorp123456'),
     ]);
 
-    $userDigitizer->assignRole('Digitador');
+    $userWarehouseman->assignRole('Gestor de pedidos');
+
+    // Crear almacenero
+    $warehouseman = Employee::create();
+
+    $userWarehouseman = User::create([
+      'document_number' => '48678902',
+      'name' => 'Almacenero',
+      'last_name' => 'User',
+      'birth_date' => '2001-02-03',
+      'gender' => 'M',
+      'phone_number' => '123456789',
+      'userable_type' => Employee::class,
+      'userable_id' => $warehouseman->id,
+      'email' => 'almacenero@aguadeliciosa.com',
+      'password' => Hash::make('almacenero123456'),
+    ]);
+
+    $userWarehouseman->assignRole('Almacen');
 
     // Crear sellers (vendedor)
     $seller = Employee::create();

@@ -9,7 +9,7 @@
 
 Clone el proyecto y luego vaya a la carpeta del proyecto.
 ``` 
-git clone https://github.com/jcbances6/orozcodent_app.git
+git clone https://github.com/bmiguelbc16/orozcodent_app.git
 ``` 
 Ejemplo:
 ``` 

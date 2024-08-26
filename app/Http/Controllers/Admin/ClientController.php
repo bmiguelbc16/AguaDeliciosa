@@ -49,7 +49,6 @@ class ClientController extends AdminController {
 
     try {
       $data = $request->validated();
-
       $data['active'] = isset($data['active']);
       $data['password'] = Hash::make($request->input('password'));
 
@@ -59,13 +58,13 @@ class ClientController extends AdminController {
 
       return redirect()
         ->route('admin.clients.index')
-        ->with('success', 'Paciente creado satisfactoriamente');
+        ->with('success', 'Cliente creado satisfactoriamente');
     } catch (\Exception $e) {
       DB::rollBack();
 
       return redirect()
         ->back()
-        ->with('error', 'Ocurrió un error al crear el Paciente: ' . $e->getMessage());
+        ->with('error', 'Ocurrió un error al crear el cliente: ' . $e->getMessage());
     }
   }
 
@@ -105,11 +104,10 @@ class ClientController extends AdminController {
     $data['active'] = isset($data['active']);
 
     $client->update($data);
-    $client->update($data);
 
     return redirect()
       ->route('admin.clients.index')
-      ->with('success', 'Paciente actualizado satisfactoriamente');
+      ->with('success', 'Cliente actualizado satisfactoriamente');
   }
 
   /**
@@ -123,9 +121,9 @@ class ClientController extends AdminController {
     try {
       $client->delete();
 
-      return response()->json(['success' => true, 'message' => 'Paciente eliminado satisfactoriamente']);
+      return response()->json(['success' => true, 'message' => 'Cliente eliminado satisfactoriamente']);
     } catch (\Exception $e) {
-      return response()->json(['success' => false, 'message' => 'Error al eliminar el Paciente'], 500);
+      return response()->json(['success' => false, 'message' => 'Error al eliminar el cliente'], 500);
     }
   }
 }

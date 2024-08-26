@@ -4,19 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class Client extends Model {
-  // use HasFactory;
-// const OPTIONS_GENDER = [
-//   'M' => 'MASCULINO',
-//   'F' => 'FEMENINO',
-// ];
-// /**
-//  * The attributes that are mass assignable.
-//  *
-//  * @var array
-//  */
-// protected $fillable = [];
-// public function user() {
-//   return $this->morphOne(User::class, 'userable');
-// }
+
+class Order extends Model {
+  use HasFactory;
+
+  protected $fillable = ['client_id', 'registration_date'];
+
+  public function orderDetails() {
+    return $this->hasMany(OrderDetail::class);
+  }
+
+  public function orderStatuses() {
+    return $this->hasMany(OrderStatus::class);
+  }
+
+  public function client() {
+    return $this->belongsTo(Client::class);
+  }
 }
