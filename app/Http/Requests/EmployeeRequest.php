@@ -27,6 +27,8 @@ class EmployeeRequest extends BaseFormRequest {
       'birth_date' => 'required|date',
       'phone' => 'nullable|string',
       'active' => 'nullable|in:on',
+      'phone_number' => 'required|string',
+      'role' => 'required|string|in:Admin,Gestor de pedidos,Almacen,Vendedor',
     ];
 
     if (

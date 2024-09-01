@@ -31,7 +31,7 @@ return new class extends Migration {
         ->foreign('product_id')
         ->references('id')
         ->on('products')
-        ->onDelete('cascade'); // Llave foránea hacia products
+        ->onDelete('restrict'); // Llave foránea hacia products
     });
   }
 

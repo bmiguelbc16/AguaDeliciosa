@@ -5,8 +5,10 @@
     <div class="col-md-12 d-flex flex-column flex-md-row justify-content-between align-items-md-center">
       <h3 class="mb-2 mb-sm-0">Trabajadores</h3>
       <div class="d-flex flex-column flex-sm-row">
-        <a href="{{ route('admin.employees.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo
-          Trabajador</a>
+        <a href="{{ route('admin.employees.create') }}" class="btn btn-primary">
+          <i class="fas fa-plus"></i>
+          NuevoTrabajador
+        </a>
       </div>
     </div>
   </div>

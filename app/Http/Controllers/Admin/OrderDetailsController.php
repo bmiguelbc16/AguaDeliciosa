@@ -98,7 +98,7 @@ class OrderDetailsController extends AdminController {
 
     return redirect()
       ->route('admin.orderdetails.index')
-      ->with('success', 'Orden actualizada satisfactoriamente');
+      ->with('success', 'Orden detallada actualizada satisfactoriamente');
   }
 
   /**
@@ -111,9 +111,9 @@ class OrderDetailsController extends AdminController {
     try {
       $orderdetail->delete();
 
-      return response()->json(['success' => true, 'message' => 'Orden eliminada satisfactoriamente']);
+      return response()->json(['success' => true, 'message' => 'Orden detallada eliminada satisfactoriamente']);
     } catch (\Exception $e) {
-      return response()->json(['success' => false, 'message' => 'Error al eliminar la orden'], 500);
+      return response()->json(['success' => false, 'message' => 'Error al eliminar la orden detallada'], 500);
     }
   }
 }

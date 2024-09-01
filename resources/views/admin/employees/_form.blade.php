@@ -75,6 +75,14 @@
           <x-form.input type="number" name="phone_number" label="Teléfono" placeholder="Teléfono"
             value="{{ $employee->user->phone_number ?? '' }}" enable-old-support />
         </div>
+
+        <div class="col-sm-4">
+          <x-form.select2 name="role" label="Rol" data-placeholder="Seleccione opción" enable-old-support>
+            <x-form.options :options="$roles" :selected="isset($employee) ? $employee?->user->getRoleNames()[0] : null" empty-option />
+          </x-form.select2>
+          
+        </div>
+
         <div class="col-sm-3">
           <div class="pt-4">
             <x-form.input-switch name="active" :checked="isset($employee) && $employee->user->active ? true : (!isset($employee) ? 'true' : false)" enable-old-support>

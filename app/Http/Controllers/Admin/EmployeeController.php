@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Employee;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmployeeRequest;
@@ -40,12 +41,14 @@ class EmployeeController extends AdminController {
   public function create() {
     // Verifica si el usuario puede crear empleados
     $this->authorize('create', Employee::class);
-    // Verifica si el usuario puede crear empleados
-    $this->authorize('create', Employee::class);
-    //
+
+    // Obtiene los géneros para el formulario
     $genders = Employee::OPTIONS_GENDER;
 
-    return view('admin.employees.create', compact('genders'));
+    // Obtiene los roles en un array para el select
+    $roles = Role::pluck('name', 'name')->toArray();
+
+    return view('admin.employees.create', compact('genders', 'roles'));
   }
 
   /**
@@ -72,7 +75,7 @@ class EmployeeController extends AdminController {
       $user = new User($data);
       $user->userable()->associate($employee);
       $user->save();
-      $user->assignRole('admin');
+      $user->assignRole($data['role']);
 
       DB::commit();
 
@@ -112,7 +115,10 @@ class EmployeeController extends AdminController {
     //
     $genders = Employee::OPTIONS_GENDER;
 
-    return view('admin.employees.edit', compact('employee', 'genders'));
+    // Obtiene los roles en un array para el select
+    $roles = Role::pluck('name', 'name')->toArray();
+
+    return view('admin.employees.edit', compact('employee', 'genders', 'roles'));
   }
 
   /**
@@ -131,6 +137,10 @@ class EmployeeController extends AdminController {
 
     $employee->user->update($data);
 
+    // Actualiza el rol del usuario
+    if (isset($data['role'])) {
+      $employee->user->syncRoles([$data['role']]);
+    }
     return redirect()
       ->route('admin.employees.index')
       ->with('success', 'Trabajador actualizado satisfactoriamente');
