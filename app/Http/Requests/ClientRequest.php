@@ -30,10 +30,17 @@ class ClientRequest extends BaseFormRequest {
       'birth_date' => 'required|date',
       'phone' => 'nullable|string',
       'active' => 'nullable|in:on',
+      'email' => 'required|email|unique:users,email,' . optional($client)->id,
     ];
 
-    if (($this->isMethod('patch') && $client && $client->email !== $this->input('email')) || $this->isMethod('post')) {
+    // Solo validar unicidad del email si es diferente al actual o si es una creación
+    if (
+      ($this->isMethod('patch') && $client && $client->user->email !== $this->input('email')) ||
+      $this->isMethod('post')
+    ) {
       $rules['email'] = 'required|email|unique:users,email';
+    } else {
+      $rules['email'] = 'required|email';
     }
 
     if ($this->isMethod('post')) {
@@ -49,6 +56,22 @@ class ClientRequest extends BaseFormRequest {
 
   protected function prepareForValidation() {
     parent::prepareForValidation();
+
+    // Generar el correo electrónico basado en el DNI si no está presente o si el DNI se ha cambiado
+    if ($this->filled('document_number')) {
+      $this->merge([
+        'email' => $this->input('document_number') . '@aguadeliciosa.com',
+      ]);
+
+      // Generar la nueva contraseña basada en el DNI si este se ha cambiado
+      if ($this->route('client') && $this->route('client')->document_number !== $this->input('document_number')) {
+        $this->merge([
+          'password' => $this->input('document_number'),
+          'password_confirmation' => $this->input('document_number'),
+        ]);
+      }
+    }
+
     $this->parseDate('birth_date');
   }
 }

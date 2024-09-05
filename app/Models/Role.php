@@ -7,12 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
   use HasFactory;
-
-  // const OPTIONS_GENDER = [
-  //   'M' => 'MASCULINO',
-  //   'F' => 'FEMENINO',
-  // ];
-
   /**
    * The attributes that are mass assignable.
    *

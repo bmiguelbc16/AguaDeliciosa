@@ -11,18 +11,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends AdminController {
-  public function __construct() {
-    // Autoriza automáticamente acciones basadas en el recurso para las políticas registradas
-    $this->authorizeResource(Employee::class, 'employee');
-  }
   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
   public function index(Request $request) {
-    // Verifica si el usuario puede ver la lista de empleados
-    $this->authorize('viewAny', Employee::class);
     //
     $name = $request->name;
 
@@ -39,9 +33,6 @@ class EmployeeController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function create() {
-    // Verifica si el usuario puede crear empleados
-    $this->authorize('create', Employee::class);
-
     // Obtiene los géneros para el formulario
     $genders = Employee::OPTIONS_GENDER;
 
@@ -58,8 +49,6 @@ class EmployeeController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function store(EmployeeRequest $request) {
-    // Verifica si el usuario puede crear empleados
-    $this->authorize('create', Employee::class);
     //
 
     DB::beginTransaction();
@@ -98,8 +87,6 @@ class EmployeeController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function show(Employee $Employee) {
-    // Verifica si el usuario puede ver el empleado
-    $this->authorize('view', $employee);
     //
   }
 
@@ -110,8 +97,6 @@ class EmployeeController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function edit(Employee $employee) {
-    // Verifica si el usuario puede editar el empleado
-    $this->authorize('update', $employee);
     //
     $genders = Employee::OPTIONS_GENDER;
 
@@ -129,8 +114,6 @@ class EmployeeController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function update(EmployeeRequest $request, Employee $employee) {
-    // Verifica si el usuario puede actualizar el empleado
-    $this->authorize('update', $employee);
     //
     $data = $request->validated();
     $data['active'] = isset($data['active']);
@@ -153,8 +136,6 @@ class EmployeeController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function destroy(Employee $employee) {
-    // Verifica si el usuario puede eliminar el empleado
-    $this->authorize('delete', $employee);
     //
     try {
       $employee->delete();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClientRequest;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +41,7 @@ class ClientController extends AdminController {
   /**
    * Store a newly created resource in storage.
    *
-   * @param  \Illuminate\Http\DoctorRequest  $request
+   * @param  \Illuminate\Http\ClientRequest $request
    * @return \Illuminate\Http\Response
    */
   public function store(ClientRequest $request) {
@@ -49,10 +50,14 @@ class ClientController extends AdminController {
 
     try {
       $data = $request->validated();
-      $data['active'] = isset($data['active']);
+      $data['active'] = true;
       $data['password'] = Hash::make($request->input('password'));
 
-      Client::create($data);
+      $client = Client::create(); // Crea el cliente
+      $user = new User($data);
+      $user->userable()->associate($client); // Asocia el cliente con el usuario
+      $user->save();
+      $user->assignRole('Cliente');
 
       DB::commit();
 
@@ -100,14 +105,26 @@ class ClientController extends AdminController {
    */
   public function update(ClientRequest $request, Client $client) {
     //
-    $data = $request->validated();
-    $data['active'] = isset($data['active']);
+    DB::beginTransaction();
 
-    $client->update($data);
+    try {
+      $data = $request->validated();
+      $data['active'] = isset($data['active']);
 
-    return redirect()
-      ->route('admin.clients.index')
-      ->with('success', 'Cliente actualizado satisfactoriamente');
+      $client->user->update($data); // Actualiza los datos del usuario relacionado
+
+      DB::commit();
+
+      return redirect()
+        ->route('admin.clients.index')
+        ->with('success', 'Cliente actualizado satisfactoriamente');
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return redirect()
+        ->back()
+        ->with('error', 'Ocurrió un error al actualizar el cliente: ' . $e->getMessage());
+    }
   }
 
   /**
@@ -118,11 +135,18 @@ class ClientController extends AdminController {
    */
   public function destroy(Client $client) {
     //
+    DB::beginTransaction();
+
     try {
-      $client->delete();
+      $client->user->delete(); // Elimina primero el usuario asociado
+      $client->delete(); // Luego elimina el cliente
+
+      DB::commit();
 
       return response()->json(['success' => true, 'message' => 'Cliente eliminado satisfactoriamente']);
     } catch (\Exception $e) {
+      DB::rollBack();
+
       return response()->json(['success' => false, 'message' => 'Error al eliminar el cliente'], 500);
     }
   }

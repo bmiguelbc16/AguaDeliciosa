@@ -36,6 +36,7 @@
             </div>
           </div>
         </div>
+
         <div class="col-sm-3">
           <div class="mb-3">
             <x-form.input name="name" label="Nombres" placeholder="Nombres"
@@ -80,7 +81,7 @@
           <x-form.select2 name="role" label="Rol" data-placeholder="Seleccione opción" enable-old-support>
             <x-form.options :options="$roles" :selected="isset($employee) ? $employee?->user->getRoleNames()[0] : null" empty-option />
           </x-form.select2>
-          
+
         </div>
 
         <div class="col-sm-3">

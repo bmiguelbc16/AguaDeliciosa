@@ -53,7 +53,7 @@
                         <i data-feather="edit"></i>
                       </a>
                       <button class="btn btn-danger btn-delete"
-                        onclick="deleteItem('{{ route('admin.clients.destroy', $item->id) }}', '{{ route('admin.employees.index') }}')">
+                        onclick="deleteItem('{{ route('admin.clients.destroy', $item->id) }}', '{{ route('admin.clients.index') }}')">
                         <i data-feather="trash-2"></i>
                       </button>
                     </div>
