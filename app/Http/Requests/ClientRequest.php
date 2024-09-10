@@ -30,24 +30,26 @@ class ClientRequest extends BaseFormRequest {
       'birth_date' => 'required|date',
       'phone' => 'nullable|string',
       'active' => 'nullable|in:on',
-      'email' => 'required|email|unique:users,email,' . optional($client)->id,
+      'email' => [
+        'required',
+        'email',
+        function ($attribute, $value, $fail) use ($client) {
+          if ($this->isMethod('post') || ($this->isMethod('patch') && $client && $client->user->email !== $value)) {
+            // Solo valida la unicidad del email si es una creación o si el email ha cambiado.
+            $exists = \App\Models\User::where('email', $value)
+              ->where('id', '!=', optional($client)->user->id)
+              ->exists();
+
+            if ($exists) {
+              $fail('El campo email ya ha sido tomado.');
+            }
+          }
+        },
+      ],
     ];
 
-    // Solo validar unicidad del email si es diferente al actual o si es una creación
-    if (
-      ($this->isMethod('patch') && $client && $client->user->email !== $this->input('email')) ||
-      $this->isMethod('post')
-    ) {
-      $rules['email'] = 'required|email|unique:users,email';
-    } else {
-      $rules['email'] = 'required|email';
-    }
-
-    if ($this->isMethod('post')) {
-      $rules['password'] = 'required|string|min:6|confirmed';
-    }
-
-    if ($this->isMethod('patch') && $this->filled('password')) {
+    // Requerir contraseña solo si se está creando un nuevo cliente o se ha proporcionado en una actualización.
+    if ($this->isMethod('post') || ($this->isMethod('patch') && $this->filled('password'))) {
       $rules['password'] = 'required|string|min:6|confirmed';
     }
 
@@ -55,23 +57,39 @@ class ClientRequest extends BaseFormRequest {
   }
 
   protected function prepareForValidation() {
-    parent::prepareForValidation();
+    // Convertir `birth_date` al formato `Y-m-d` (ejemplo: '2003-09-11').
+    if ($this->filled('birth_date')) {
+      $birthDate = \DateTime::createFromFormat('d/m/Y', $this->input('birth_date'));
+      if ($birthDate) {
+        $this->merge([
+          'birth_date' => $birthDate->format('Y-m-d'),
+        ]);
+      } else {
+        // Si la fecha no puede ser parseada, puedes agregar un error o manejarlo de otra manera.
+        $this->merge([
+          'birth_date' => null,
+        ]);
+      }
+    }
 
-    // Generar el correo electrónico basado en el DNI si no está presente o si el DNI se ha cambiado
+    // Generar el correo electrónico basado en el DNI si no está presente.
     if ($this->filled('document_number')) {
       $this->merge([
         'email' => $this->input('document_number') . '@aguadeliciosa.com',
       ]);
 
-      // Generar la nueva contraseña basada en el DNI si este se ha cambiado
-      if ($this->route('client') && $this->route('client')->document_number !== $this->input('document_number')) {
+      // Generar la nueva contraseña basada en el DNI si este se ha cambiado.
+      if (
+        $this->isMethod('post') ||
+        ($this->isMethod('patch') &&
+          $this->route('client') &&
+          $this->route('client')->document_number !== $this->input('document_number'))
+      ) {
         $this->merge([
           'password' => $this->input('document_number'),
           'password_confirmation' => $this->input('document_number'),
         ]);
       }
     }
-
-    $this->parseDate('birth_date');
   }
 }

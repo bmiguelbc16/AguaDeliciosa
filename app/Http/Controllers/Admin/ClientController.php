@@ -19,7 +19,7 @@ class ClientController extends AdminController {
     //
     $name = $request->name;
 
-    $items = Client::when($name, function ($query) use ($name) {
+    $items = Client::whereHas('user', function ($query) use ($name) {
       $query->whereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%{$name}%"]);
     })->paginate(20);
 

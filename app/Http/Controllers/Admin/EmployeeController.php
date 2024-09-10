@@ -37,7 +37,10 @@ class EmployeeController extends AdminController {
     $genders = Employee::OPTIONS_GENDER;
 
     // Obtiene los roles en un array para el select
-    $roles = Role::pluck('name', 'name')->toArray();
+    $excludedRoles = ['Cliente'];
+    $roles = Role::whereNotIn('name', $excludedRoles)
+      ->pluck('name', 'name')
+      ->toArray();
 
     return view('admin.employees.create', compact('genders', 'roles'));
   }

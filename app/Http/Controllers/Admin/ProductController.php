@@ -15,6 +15,7 @@ class ProductController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function index(Request $request) {
+    // Filtra productos por nombre
     $name = $request->name;
 
     $items = Product::when($name, function ($query) use ($name) {
@@ -30,8 +31,10 @@ class ProductController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function create() {
-    // Implementar si es necesario
-    return view('admin.products.create');
+    // Cuando se crea un producto, el stock será editable
+    $isStockEditable = true;
+
+    return view('admin.products.create', compact('isStockEditable'));
   }
 
   /**
@@ -80,8 +83,10 @@ class ProductController extends AdminController {
    * @return \Illuminate\Http\Response
    */
   public function edit(Product $product) {
-    // Implementar si es necesario
-    return view('admin.products.edit', compact('product'));
+    // Cuando se edita un producto, el stock NO será editable
+    $isStockEditable = false;
+
+    return view('admin.products.edit', compact('product', 'isStockEditable'));
   }
 
   /**

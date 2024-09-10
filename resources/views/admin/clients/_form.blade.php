@@ -75,12 +75,10 @@
       <h6 class="card-title">Datos de contacto</h6>
 
       <div class="row">
-
         <div class="col-sm-4">
-          <x-form.input type="number" name="phone" label="Teléfono" placeholder="Teléfono"
-            value="{{ $client->user->phone_number ?? '' }}" enable-old-support />
+          <x-form.input type="text" name="phone" label="Teléfono" placeholder="Teléfono"
+            value="{{ old('phone', $client->user->phone_number ?? '') }}" enable-old-support />
         </div>
-
       </div>
     </div>
   </div>

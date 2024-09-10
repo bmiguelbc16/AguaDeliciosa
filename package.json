@@ -8,7 +8,7 @@
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
-        "start": "npm run watch & php artisan serve",
+        "start": "concurrently \"npm run watch\" \"php artisan serve\"",
         "postinstall": "npm run production",
         "prepare": "husky install",
         "pre-commit": "lint-staged"
@@ -19,6 +19,7 @@
         "axios": "^1.6.5",
         "browser-sync": "^2.27.11",
         "browser-sync-webpack-plugin": "^2.3.0",
+        "concurrently": "^9.0.0",
         "cross-env": "^7.0",
         "husky": "^8.0.3",
         "jquery": "3.6.3",
