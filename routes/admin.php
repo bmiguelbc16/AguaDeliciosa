@@ -19,7 +19,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductIncomingController;
-use App\Http\Controllers\Admin\ProductShipmentsController;
+use App\Http\Controllers\Admin\ProductOutputController;
 
 Route::get('/', function () {
   return redirect()->secure(route('admin.dashboard.index'));
@@ -52,15 +52,15 @@ Route::prefix('registros')->group(function () {
     ->parameters(['productos' => 'product'])
     ->names('products');
 
-  Route::resource('ingreso-de-productos', ProductIncomingController::class)
+  Route::resource('ingreso-de-productos', ProductEntryController::class)
     ->except(['show'])
-    ->parameters(['ingreso-de-productos' => 'productIncoming'])
-    ->names('product_incomings');
+    ->parameters(['ingreso-de-productos' => 'productEntry'])
+    ->names('productEntries');
 
-  Route::resource('salida-de-productos', ProductShipmentsController::class)
+  Route::resource('salida-de-productos', ProductOutputController::class)
     ->except(['show'])
-    ->parameters(['salida-de-productos' => 'productShipment'])
-    ->names('product_shipments');
+    ->parameters(['salida-de-productos' => 'productOutput'])
+    ->names('productOutputs');
 });
 
 // 404 for undefined routes

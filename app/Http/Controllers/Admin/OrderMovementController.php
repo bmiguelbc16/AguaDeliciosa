@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\OrderDetailRequest;
 use Illuminate\Support\Facades\DB;
 
-class OrderDetailsController extends AdminController {
+class OrderMovementController extends AdminController {
   /**
    * Display a listing of the resource.
    *

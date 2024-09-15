@@ -66,7 +66,7 @@
       @role('Admin|Almacen')
         <li
           class="nav-item {{ active_class(['admin/registros/ingreso-de-productos', 'admin/registros/ingreso-de-productos/*']) }}">
-          <a href="{{ route('admin.product_incomings.index') }}" class="nav-link">
+          <a href="{{ route('admin.productEntries.index') }}" class="nav-link">
             <i class="link-icon" data-feather="plus"></i>
             <span class="link-title">Ingreso de Productos</span>
           </a>
@@ -76,7 +76,7 @@
       @role('Admin|Almacen')
         <li
           class="nav-item {{ active_class(['admin/registros/salida-de-productos', 'admin/registros/salida-de-productos/*']) }}">
-          <a href="{{ route('admin.product_shipments.index') }}" class="nav-link">
+          <a href="{{ route('admin.productOutputs.index') }}" class="nav-link">
             <i class="link-icon" data-feather="minus"></i>
             <span class="link-title">Salida de Productos</span>
           </a>
