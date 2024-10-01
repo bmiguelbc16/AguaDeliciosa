@@ -37,7 +37,7 @@
         "@mdi/font": "^7.1.96",
         "@popperjs/core": "^2.11.6",
         "@simonwep/pickr": "^1.8.2",
-        "ace-builds": "^1.14.0",
+        "ace-builds": "^1.36.2",
         "animate.css": "^4.1.1",
         "apexcharts": "^3.36.3",
         "bootstrap": "^5.2.3",
